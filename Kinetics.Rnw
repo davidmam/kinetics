@@ -1,0 +1,85 @@
+\documentclass{article}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+we will generate a set of kintetic data and explore the effect of experimental error on the results we get if it is analysed in certain ways.
+
+A simple kinetic reaction follows the formula 
+$V = \frac{V_{max}\cdot[S]}{K_m+[S]}$
+
+We can set the $V_{max}$ and $K_m$ to appropriate values and calculate the observed velocity $V$ at each value of the substrate concentration $[S]$. 
+
+With $V_{max}$ set to 100 and $K_m$ to 5 we can calculate the effective rate for values of the substrate concentration from 0 to 50 using a standard serial dilution.
+
+<<>>=
+vmax <- 100
+km <- 50
+substrate <- c(0,1, 2, 5, 10, 20, 50, 100, 200 ,500)
+velocity <- vmax*substrate/(substrate+km)
+@
+
+The velocity can then be plotted in several ways. The simplest way is to plot the rate against the substrate concentration. 
+
+<<label=SVplot1, include=FALSE>>=
+plot(velocity~substrate, xlab="[S]", ylab="V", type='l')
+@
+
+
+\begin{center}
+<<label=fig1, fig=TRUE, echo=FALSE>>=
+<<SVplot1>>
+@
+
+\end{center}
+
+It is hard to estimate the $Km$ or $Vmax$ from such plots so typically we transform the data to a straight line, fit the straight line and use this to determine the $K_m$ and $V_{max}$. 
+
+Traditionally students would use the Lineweaver-Burke plot. This is the reciprocalof the previous plot.
+
+<<label=LBplot1, include=FALSE>>=
+plot(1/substrate[-1],1/velocity[-1], xlab="1/[S]", ylab="1/V", type='l')
+@
+
+
+\begin{center}
+<<label=fig1, fig=TRUE, echo=FALSE>>=
+<<LBplot1>>
+@
+
+\end{center}
+
+Zooming in on the Y axis:
+
+<<label=LBplot1a, include=FALSE>>=
+plot(1/substrate[5:10],1/velocity[5:10], xlab="1/[S]", ylab="1/V", type='l', xlim=c(0,0.1), ylim=c(0,0.07))
+@
+
+
+\begin{center}
+<<label=fig1, fig=TRUE, echo=FALSE>>=
+<<LBplot1a>>
+@
+
+Extending theline to intercept the X-axis gives $1/V_{max}$ as the Y intercept and $-1/K_m$ as the X intercept.
+
+<<label=LBplot1b, include=FALSE>>=
+plot(c(-1/km, 1/substrate[5]), c(0, 1/velocity[5]), col=2, type='l', xlab="1/[S]", ylab="1/V",xlim=c(-1/km,0.1), ylim=c(0,0.07))
+lines(1/substrate[5:10],1/velocity[5:10] )
+abline(v=0,lty=2)
+abline(h=1/vmax, lty=3)
+@
+
+
+\begin{center}
+<<label=fig1, fig=TRUE, echo=FALSE>>=
+<<LBplot1b>>
+@
+
+
+
+
+With modern computers, fitting the experimental data directly is a good idea as the transformations amplify errors in the data. 
+
+
+\end{document}
