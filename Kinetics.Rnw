@@ -233,7 +233,7 @@ experiment<-as.data.frame(experiment)
 colnames(experiment) <- c('substrate','velocity', 'expr')
 data<-subset(experiment, expr==1)
 fit<-drm(velocity ~substrate, data= data, fct=MM.2())
-mmres <- fit$coefficients
+mmres <- as.data.frame(cbind(fit$coefficients[1],fit$coefficients[2]))
 mmres
 @
 
@@ -457,6 +457,20 @@ sd(hwres$Km)
 @
 
 \subsection{Conclusions}
+
+We can compare the four methods described here - three linear and one direct fitting.
+
+<<>>=
+mmres$method<-'Direct'
+lbres$method<-'Lineweaver-Burke'
+ehres$method<-'Eadie-Hoftzee'
+hwres$method<-'Haynes-Woolf'
+results <-rbind(mmres,lbres,ehres,hwres)
+tapply(results$Vmax, results$method, mean)
+tapply(results$Vmax, results$method, sd)
+tapply(results$Km, results$method, mean)
+tapply(results$Km, results$method, sd)
+@
 
 
 
