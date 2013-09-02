@@ -8,7 +8,7 @@
 	\addtolength{\topmargin}{-.875in}
 	\addtolength{\textheight}{1.75in}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+%\SweaveOpts{concordance=TRUE}
 
 \section{Introduction}
 
@@ -57,7 +57,6 @@ plot(1/substrate[-1],1/velocity[-1], xlab="1/[S]", ylab="1/V", type='l',
      main="Lineweaver-Burke plot")
 points(1/substrate[-1],1/velocity[-1])
 @
-
 
 \begin{center}
 <<label=LBfig1, fig=TRUE, echo=FALSE>>=
@@ -197,12 +196,15 @@ for (p in 1:15) {
 
 \subsubsection{Fitting the data}
 
-To fit the data we can use the drc package.
+To fit the data we can use the drc package. (Note: these commands do not run automatically. You will need to run the install once and the library command each time you start R.)
 
 << eval=FALSE>>=
 install.packages("drc")
 @
-<<>>=
+<<eval=FALSE>>=
+library(drc)
+@
+<<include=FALSE>>=
 library(drc)
 @
 
@@ -281,7 +283,7 @@ fit$coefficients[2]/fit$coefficients[1]
 
 Again, we will repeat this for the experimental data. First we will plot the transformed data, then fit a straight line to each data set.
 
-<<LBexp>>=
+<<label=LBexp, include=FALSE>>=
 plot(c(-1/km, 1/substrate[2]), c(0,1/velocity[2]), 
      ylim=c(0, 1/min(experiment$velocity)), type='l', lty=3, 
      xlab='1/[S]', ylab='1/V', main='Lineweaver-Burke plot')
@@ -349,7 +351,7 @@ fit$coefficients[1]
 
 Again, we will repeat this for the experimental data. First we will plot the transformed data, then fit a straight line to each data set.
 
-<<EHexp>>=
+<<label=EHexp, include=FALSE>>=
 plot(c(0,vmax/km), c(vmax,0), ylim=c(0, max(experiment$velocity)), type='l', lty=3, 
      xlab='V/[S]', ylab='V',main='Eadie-Hoftzee plot')
   points(
@@ -417,7 +419,7 @@ fit$coefficient[1]/fit$coefficients[2]
 
 Again, we will repeat this for the experimental data. First we will plot the transformed data, then fit a straight line to each data set.
 
-<<HWexp>>=
+<<label=HWexp, include=FALSE>>=
 plot(c(-km,max(experiment$substrate)), c(km/vmax, substrate[10]/velocity[10]), 
        ylim=c(0, max(experiment$substrate/experiment$velocity)), type='l', lty=3, 
      xlab='V/[S]', ylab='V',main='Haynes-Woolf plot')
@@ -447,6 +449,7 @@ for (e in 2:15){
 <<HWexp>>
 @
 \end{center}
+
 The estimates from the experimental data are significantly better than the Lineweaver-Burke plot.
 
 <<>>=
@@ -472,6 +475,6 @@ tapply(results$Km, results$method, mean)
 tapply(results$Km, results$method, sd)
 @
 
-
+From these results we can see that the Haynes-Woolf plot gives the closest results to the real data, very similar to the direct fitting. Eadie-Hoftzee is close. Lineweaver-Burke should not be used.
 
 \end{document}
