@@ -8,6 +8,7 @@
 	\addtolength{\topmargin}{-.875in}
 	\addtolength{\textheight}{1.75in}
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 %\SweaveOpts{concordance=TRUE}
 
 \section{Introduction}
@@ -21,7 +22,7 @@ $V = \frac{V_{max}\cdot[S]}{K_m+[S]}$
 
 We can set the $V_{max}$ and $K_m$ to appropriate values and calculate the observed velocity $V$ at each value of the substrate concentration $[S]$. 
 
-With $V_{max}$ set to 100 and $K_m$ to 5 we can calculate the effective rate for values of the substrate concentration from 0 to 50 using a standard serial dilution.
+With $V_{max}$ set to 100 and $K_m$ to 50 we can calculate the effective rate for values of the substrate concentration from 0 to 500 using a standard serial dilution.
 
 <<>>=
 vmax <- 100
